@@ -28,7 +28,7 @@ The framework enables efficient ranking and screening of docking conformations a
 
 # Installation
 
-We recommend using `conda` to manage the runtime environment. All codes were tested on Ubuntu 22.04, Python 3.7.16 and PyTorch 1.12.1+cu113. The preprocessing pipeline of ABUS depends on several external tools, including `MaSIF` (1), `MSMS`, `APBS`, `PDB2PQR`, `Reduce`, and `HDOCK` (2), for protein surface construction, physicochemical feature extraction, protonation, and docking generation. Please ensure that all dependencies are correctly installed before running preprocessing or training scripts. The installation procedure mainly consists of the following steps:
+We recommend using `conda` to manage the runtime environment. All codes were tested on Ubuntu 22.04, Python 3.7.16 and PyTorch 1.12.1+cu113. The preprocessing pipeline of ABUS depends on several external tools, including `MaSIF` (1), `MSMS`, `APBS`, `PDB2PQR`, `Reduce`, and `HDOCK`; (2) for protein surface construction, physicochemical feature extraction, protonation, and docking generation. Please ensure that all dependencies are correctly installed before running preprocessing or training scripts. The installation procedure mainly consists of the following steps:
 
 1. Clone the ABUS repository and configure the Python environment.
 2. Install external preprocessing dependencies.
