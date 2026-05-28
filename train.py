@@ -2,6 +2,7 @@ import os
 import sys
 import torch
 import random
+import argparse
 import numpy as np
 from utils.utils import *
 from model.ABUS import ABUS
@@ -11,20 +12,18 @@ from torch.utils.data import DataLoader
 from model.ViT_pytorch import get_ml_config
 
 
-
 WORK_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(WORK_DIR)
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 
-MODEL_NAME = 'ABUS'
-MODEL_DIR = f'{WORK_DIR}/save_model/{MODEL_NAME}'
-LOG_DIR = f'{WORK_DIR}/train_log/{MODEL_NAME}'
-os.makedirs(MODEL_DIR, exist_ok=True)
-os.makedirs(LOG_DIR, exist_ok=True)
-DATA_DIR = f'{WORK_DIR}/data/AbAg_PDB2025'
-TRAIN_LIST_FILE = f'{DATA_DIR}/train.csv'
-VAL_LIST_FILE = f'{DATA_DIR}/val.csv'
+def parse_args():
+    parser = argparse.ArgumentParser(description="ABUS Training")
+    parser.add_argument('--model_name', type=str, default='ABUS', help='Model name')
+    parser.add_argument('--data_dir', type=str, default=f'{WORK_DIR}/data/AbAg_PDB2025', help='Dataset directory')
+    parser.add_argument('--train_list', type=str, default=None, help='Train csv file')
+    parser.add_argument('--val_list', type=str, default=None, help='Validation csv file')
+    return parser.parse_args()
 
 
 ABUS_CONFIG = {
@@ -84,7 +83,7 @@ def train(search_space: dict, train_list_file: str, val_list_file: str, model_di
     model = ABUS(model_config, img_size=search_space['img_size'], margin=search_space['margin'], temperature=search_space['temperature']).float()
     model = model.to(device)
     n_params = sum([np.prod(p.size()) for p in model.parameters()])
-    log_info("Model Log", f"Load model {MODEL_NAME} with {n_params} parameters.")
+    log_info("Model Log", f"Load model {model_name} with {n_params} parameters.")
     save_model_config(model_dir, model_name, n_params, search_space)
     
     # Optimizer
@@ -108,15 +107,26 @@ def train(search_space: dict, train_list_file: str, val_list_file: str, model_di
 
 
 if __name__ == "__main__":
+    args = parse_args()
+    model_name = args.model_name
+    data_dir = args.data_dir
+    model_dir = f'{WORK_DIR}/save_model/{model_name}'
+    log_dir = f'{WORK_DIR}/train_log/{model_name}'
+    train_list_file = args.train_list or f'{args.data_dir}/train.csv'
+    val_list_file = args.val_list or f'{args.data_dir}/val.csv'
+    
+    os.makedirs(model_dir, exist_ok=True)
+    os.makedirs(log_dir, exist_ok=True)
+    
     set_seed(ABUS_CONFIG['seed'])
-    config = make_config(DATA_DIR)
+    config = make_config(data_dir)
     train(
         search_space = ABUS_CONFIG,
-        train_list_file = TRAIN_LIST_FILE,
-        val_list_file = VAL_LIST_FILE,
-        model_dir = MODEL_DIR,
-        model_name = MODEL_NAME,
-        data_dir = DATA_DIR,
-        log_dir = LOG_DIR,
+        train_list_file = train_list_file,
+        val_list_file = val_list_file,
+        model_dir = model_dir,
+        model_name = model_name,
+        data_dir = data_dir,
+        log_dir = log_dir,
         config = config
     )

@@ -65,7 +65,7 @@ def construct_default_config(pdb_dir: str, out_dir: str) -> dict:
     config['interact_feat']['dssp'] = True
     
     root_dir= os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    config['model'] = os.path.join(root_dir, 'save_model', 'test_model.pth')
+    config['model'] = os.path.join(root_dir, 'save_model', 'ABUS.pth')
 
     config['mesh'] = {}
     config['mesh']['mesh_res'] = 1.0  # resolution of the mesh
@@ -107,7 +107,7 @@ def infer_from_model(ppi_list, grid_dir, model_path, params, device, radius, vis
             grid = grid.to(device)
             output, _ = model(grid)
             all_outputs.append(output)
-
+            
     output = torch.cat(all_outputs, axis=0)
     output = output.cpu().detach().numpy()
     return output

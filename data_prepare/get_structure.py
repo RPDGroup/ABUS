@@ -14,7 +14,6 @@ def protonate_pdb(ppi: str, config: dict) -> None:
     pid = ppi.split('_')[0]
     raw_pdb_filename = os.path.join(config['dirs']['raw_pdb'], f"{pid}.pdb")
     if not os.path.exists(raw_pdb_filename):
-        # pdbl = PDBList(server="https://files.rcsb.org")
         pdbl = PDBList(server="https://files.wwpdb.org")
         raw_pdb_filename = pdbl.retrieve_pdb_file(pid, pdir=config['dirs']['raw_pdb'], file_format='pdb')
     else:

@@ -160,12 +160,12 @@ def run_pipeline(config: dict):
 if __name__ == "__main__":
 
     config = {
-        "usalign_path": "/opt/data/private/develop4abbench/zgs/USalign/USalign",
-        "file_csv": "/path/pdb_path.csv",
-        "output_train": "/path/train_list.txt",
-        "output_test": "/path/test_list.txt",
-        "tm_matrix_path": "/path/usalign_matrix.npy",
-        "n_workers": 180,
+        "usalign_path": "/path/to/USalign/USalign",
+        "file_csv": "/path/to/pdb_path.csv",
+        "output_train": "/path/to/train_list.txt",
+        "output_test": "/path/to/test_list.txt",
+        "tm_matrix_path": "/path/to/usalign_matrix.npy",
+        "n_workers": 32,
         "tmalign_timeout": 60,
         "distance_threshold": 0.5
     }

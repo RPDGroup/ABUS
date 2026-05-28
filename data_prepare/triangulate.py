@@ -18,6 +18,7 @@ from masif.source.triangulation.computeAPBS import computeAPBS
 from masif.source.triangulation.compute_normal import compute_normal
 
 def triangulate_one(ppi: str, ch: str, config: dict, pdb_filename: str) -> None:
+    """Triangulate one chain."""
     pid = ppi.split('_')[0]
     chains_pdb_dir = config['dirs']['chains_pdb']
     tmp_pdb_dir = os.path.join(chains_pdb_dir, f"{pid}_{ch}")

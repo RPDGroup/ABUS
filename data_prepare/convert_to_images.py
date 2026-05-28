@@ -10,6 +10,7 @@ from data_prepare.map_patch_atom import map_patch_indices
 
 
 def get_new_coord_patch(radius: int) -> np.ndarray:
+    """Get new patch coordinates."""
     new_patch_coord = []
     for i in range(0, radius*2):
         for j in range(0, radius*2):

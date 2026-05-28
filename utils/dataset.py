@@ -86,8 +86,8 @@ class AbAg_Dataset(Dataset):
 
         pos_paths = []
         neg_paths = []
-        pos_paths = [os.path.join(self.docked_grid_dir, "07-grid", ppi, model_i, f"{model_i}.npy") for model_i in pos_models]
-        neg_paths = [os.path.join(self.docked_grid_dir, "07-grid", ppi, model_i, f"{model_i}.npy") for model_i in neg_models]
+        pos_paths = [os.path.join(self.docked_grid_dir, "06-grid", ppi, model_i, f"{model_i}.npy") for model_i in pos_models]
+        neg_paths = [os.path.join(self.docked_grid_dir, "06-grid", ppi, model_i, f"{model_i}.npy") for model_i in neg_models]
         
         static_npy_file = os.path.join(self.static_grid_dir, ppi, f"{ppi}.npy")
         static_grid1 = self._rotate(np.load(static_npy_file, allow_pickle=True))
@@ -138,6 +138,12 @@ class ABUS_Dataset(Dataset):
                 i += 1
                 
                 grid = np.load(os.path.join(grid_dir, f"{ppi}.npy"), allow_pickle=True)
+                all_grids.append(grid)
+            elif os.path.exists(os.path.join(grid_dir, ppi, f"{ppi}.npy")):
+                ppi_to_idx[ppi] = i
+                i += 1
+                
+                grid = np.load(os.path.join(grid_dir, ppi, f"{ppi}.npy"), allow_pickle=True)
                 all_grids.append(grid)
                 
         self.ppi_to_idx = ppi_to_idx

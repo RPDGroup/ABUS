@@ -9,6 +9,7 @@ from scipy.spatial import cKDTree
 
 
 def get_start_res(resid: np.ndarray, chain_id: np.ndarray) -> np.ndarray:
+    """Get start residue for each chain."""
     chain_curr = ''
     start_res = []
     start_res_curr = resid[0]

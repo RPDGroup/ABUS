@@ -46,6 +46,23 @@ def get_date() -> str:
 def log_info(tag: str, msg: str, colour: str = Colour.GREEN) -> None:
     """Log info message."""
     print(f"{colour}[{get_date()}][{tag}]{Colour.RESET} {msg}")
+    
+
+def set_environment():
+    """Set environment variables."""
+    environment_vars = {
+        'MSMS_BIN': '/opt/conda/envs/abus_env/bin/msms',
+        'PDB2PQR_BIN': '/path/to/ABUS/pdb2pqr-linux-bin64-2.1.1/pdb2pqr',
+        'APBS_BIN': '/path/to/ABUS/APBS-3.4.1.Linux/bin/apbs',
+        'MULTIVALUE_BIN': '/path/to/ABUS/APBS-3.4.1.Linux/share/apbs/tools/bin/multivalue',
+        'REDUCE_BIN': '/path/to/ABUS/reduce-master/reduce'
+    }
+    for var_name, var_path in environment_vars.items():
+        os.environ[var_name] = var_path
+        if os.path.exists(var_path):
+            log_info("Environment Log", f"Successfully loaded {var_name}.")
+        else:   
+            log_info("Environment Log", f"Failed to load {var_name}. File not found.", Colour.RED)
 
 
 def make_config(data_dir: str) -> dict:
@@ -53,11 +70,8 @@ def make_config(data_dir: str) -> dict:
     config = {}
     config['dirs'] = {}
     config['dirs']['data_prepare'] = data_dir
-    # config['dirs']['grid'] = os.path.join(config['dirs']['data_prepare'], 'static')
-    # config['dirs']['md'] = os.path.join(config['dirs']['data_prepare'], 'docked')
-    config['dirs']['grid'] = os.path.join(config['dirs']['data_prepare'], '07-grid')
-    config['dirs']['md'] = os.path.join(config['dirs']['data_prepare'], 'md')
-    
+    config['dirs']['grid'] = os.path.join(config['dirs']['data_prepare'], 'static')
+    config['dirs']['md'] = os.path.join(config['dirs']['data_prepare'], 'docked')
     
     config['dirs']['tmp'] = os.path.join(config['dirs']['data_prepare'], 'tmp')
     os.makedirs(config['dirs']['tmp'], exist_ok=True)
@@ -177,7 +191,7 @@ def select_one_ppi(args: tuple) -> tuple:
                 continue
             
             # npy file
-            grid_file = os.path.join(docked_grid_dir, "07-grid", ppi, f"{ppi}_{number}", f"{ppi}_{number}.npy")
+            grid_file = os.path.join(docked_grid_dir, "06-grid", ppi, f"{ppi}_{number}", f"{ppi}_{number}.npy")
             if not os.path.exists(grid_file):
                 continue
             
@@ -198,22 +212,6 @@ def select_one_ppi(args: tuple) -> tuple:
         return ppi, [], []
 
     return (ppi, pos_models, neg_models)
-
-
-def set_environment():
-    """Set environment variables."""
-    environment_vars = {
-        'MSMS_BIN': '/path/msms/msms.x86_64Linux2.2.6.1',
-        'PDB2PQR_BIN': '/path/pdb2pqr/pdb2pqr-linux-bin64-2.1.1/pdb2pqr',
-        'APBS_BIN': '/path/apbs3.4.1/APBS-3.4.1.Linux/bin/apbs',
-        'MULTIVALUE_BIN': '/path/apbs3.4.1/APBS-3.4.1.Linux/share/apbs/tools/bin/multivalue'
-    }
-    for var_name, var_path in environment_vars.items():
-        os.environ[var_name] = var_path
-        if os.path.exists(var_path):
-            log_info("Environment Log", f"Successfully loaded {var_name}.")
-        else:   
-            log_info("Environment Log", f"Failed to load {var_name}. File not found. You need to install {var_name}.", Colour.RED)
             
 
 def compute_auc(df):
