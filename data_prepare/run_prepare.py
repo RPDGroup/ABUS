@@ -60,8 +60,10 @@ def prepare_docking(processed_ppi: list, config: dict):
         log_info("Data Prepare", f"Combined {ppi} reference pdb files.")
         
         with open('irmsd.csv', 'w') as out:
-            out.write('model_i,model_PPI,iRMSD,lRMSD,FNAT\n')
+            out.write('model_i,model_PPI,iRMSD,lRMSD,FNAT,label\n')
             for model_i in range(1, 101):  # generate each model
+                irmsd, lrmsd, fnat, y = None, None, None, 0
+                model_ppi = None
 
                 try:
                     model_ppi = f"{pid}-model-{model_i}_{new_ch1}_{new_ch2}"
@@ -83,22 +85,32 @@ def prepare_docking(processed_ppi: list, config: dict):
                     merge_chains(curr_pdb_ref, new_ch2, new_ch1, tmp_pdb_ref)
 
                     sim = StructureSimilarity(tmp_pdb_docked, tmp_pdb_ref)
-
                     irmsd = sim.compute_irmsd_pdb2sql(method='svd')
-                    lrmsd = sim.compute_lrmsd_pdb2sql(method='svd')
+                    lrmsd = sim.compute_lrmsd_fast(method='svd')
                     fnat = sim.compute_fnat_pdb2sql()
+                    del sim
 
-                    os.remove(tmp_pdb_docked)
-                    os.remove(tmp_pdb_ref)
+                    try:
+                        os.remove(tmp_pdb_docked)
+                    except Exception:
+                        pass
+                    try:
+                        os.remove(tmp_pdb_ref)
+                    except Exception:
+                        pass
 
-
-                    # if irmsd < config['ppi_const']['iRMSD_threshold']:
-                    #     shutil.move(os.path.join(config['dirs']['grid'], model_ppi + '.npy'), pos_dir + model_ppi + '.npy')
-                    # else:
-                    #     shutil.move(os.path.join(config['dirs']['grid'], model_ppi + '.npy'), neg_dir + model_ppi + '.npy')
-                    out.write(f'{model_i},{model_ppi},{irmsd},{lrmsd},{fnat}\n')
+                    if fnat is not None and lrmsd is not None and irmsd is not None:
+                        y = 1 if (fnat >= 0.1 and (lrmsd <= 10 or irmsd <= 4)) else 0
+                    else:
+                        y = 0
+                    
+                    out.write(f'{model_i},{model_ppi},{irmsd},{lrmsd},{fnat},{y}\n')
+                    out.flush()
                 except Exception as e:
                     log_info("Data Prepare", f"Error in preparing {model_ppi}. {e}", Colour.RED)
+                    y = 0
+                    out.write(f'{model_i},{model_ppi},{irmsd},{lrmsd},{fnat},{y}\n')
+                    out.flush()
         
 
 def prepare(args):
