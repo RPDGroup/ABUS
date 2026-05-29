@@ -259,7 +259,7 @@ If you use ABUS or our benchmark datasets in your research, please cite:
 ```bibtex
 @article{ABUS,
   title={ABUS: an antibody binding unified scoring framework for screening AI-designed antibodies},
-  author={Gaosheng Zhang, Jialu Han, Shuai Yang, Pingping Sun, Ming Ni, Zhiguo Fu, Xiaochen Bo, Huijie Zhang, Xue Li, Zilin Ren},
+  author={Gaosheng Zhang, Jialu Han, Yixiang Zhang, Shuai Yang, Huijie Zhang, Zhiguo Fu, Ming Ni, Xiaochen Bo, Pingping Sun, Xue Li, Zilin Ren},
   journal={XXX},
   year={2026},
   doi={xxx}
