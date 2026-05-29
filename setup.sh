@@ -23,6 +23,7 @@ pip3 install pdb2sql
 pip3 install ipython
 pip3 install networkx
 pip3 install tensorboard
+pip3 install jupyter
 
 
 wget https://github.com/PyMesh/PyMesh/releases/download/v0.3/pymesh2-0.3-cp37-cp37m-linux_x86_64.whl
