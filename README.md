@@ -207,6 +207,11 @@ optional arguments:
   --out_dir OUT_DIR  Directory with output files.
 ```
 
+### Testing
+
+The `test.ipynb` notebook contains the complete data download and testing workflow, along with the figures from our paper, enabling readers to reproduce the results easily.
+
+
 ## Model Training
 
 Train ABUS using preprocessed interface feature maps:
