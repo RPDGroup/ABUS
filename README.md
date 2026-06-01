@@ -20,6 +20,7 @@ The framework enables efficient ranking and screening of docking conformations a
   * [Data Preprocessing](#data-preprocessing)
   * [Prediction](#prediction)
   * [Model Training](#model-training)
+  * [Testing](#testing)
 * [Dataset Structure](#dataset-structure)
 * [Citation](#citation)
 * [Reference](#reference)
